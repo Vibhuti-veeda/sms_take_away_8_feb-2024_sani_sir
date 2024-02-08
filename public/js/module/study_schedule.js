@@ -229,7 +229,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 
     $(document).on('change', '.actualStartDate', function(e){
-        // alert('hi');
+
         e.preventDefault();
         var schedule_start_date = $('#schedule_start_date').val();
         var actualStartDate = $('.actualStartDate').val();
@@ -780,6 +780,7 @@ $(document).on('click', '#myCopyActivityModal', function(){
 $(document).ready(function(){
     $(document).on('click','.saveStartDate',function(){
         var id = $(this).data('id');
+        
         $.ajax({
             url:'/sms-admin/study-schedule-monitoring/view/study-schedule-actual-start-date-modal/'+id,
             method:'get',
@@ -807,4 +808,5 @@ $(document).ready(function(){
         });         
     });
 });
+
 

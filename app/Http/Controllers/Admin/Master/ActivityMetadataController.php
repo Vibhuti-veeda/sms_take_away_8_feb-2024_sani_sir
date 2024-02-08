@@ -35,10 +35,6 @@ class ActivityMetadataController extends Controller
                                                         $q->select('id', 'control_name');
                                                     }
                                                 ])
-                                                ->whereHas('controlName', function($q){
-                                                    $q->where('is_active', 1)
-                                                      ->where('is_delete', 0);
-                                                })
                                                 ->orderBy('id', 'DESC')
                                                 ->get();
 

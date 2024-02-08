@@ -1,4 +1,4 @@
-<form class="custom-validation addActualStartDate" action="{{ route('admin.saveStudyScheduleActualStartDateModal') }}" method="post" id="addActualStartDate" enctype="multipart/form-data">
+<form class="custom-validation addActualStartDate" method="post" id="addActualStartDate" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="id" id="id" value="{{ $studySheduleStartDate->id }}">
     <input type="hidden" name="activity_id" id="activity_id" value="{{ $studySheduleStartDate->activity_id }}">
@@ -52,17 +52,18 @@
             </div>
         </div>
         
-        <div class="form-group mb-3 row">
+        <div class=" form-group mb-3 row" >
             <label class="col-md-3 col-form-label">Actual Start Date<span class="mandatory">*</span></label>
             <div class="col-md-9">
                 @if(Auth::guard('admin')->user()->role_id == 2 || Auth::guard('admin')->user()->role_id == 1) 
                 
                 <!-- {{ $studySheduleStartDate->actual_start_date != '' ? date('d M Y', strtotime($studySheduleStartDate->actual_start_date)) : '' }} -->
-                    <input type="date" class="form-control actualStartDate scheduleStartDatepicker" max="{{date('Y-m-d')}}" name="actual_start_date" id="actual_start_date"autocomplete="off" value="{{ ($studySheduleStartDate->actual_start_date != '') ?  date('Y-m-d', strtotime($studySheduleStartDate->actual_start_date)) : ''}}"required style="width:80%;">     
+                    
+                    <input type="date" class="form-control actualStartDate scheduleDatepicker"  max="{{date('Y-m-d')}}" name="actual_start_date" id="actual_start_date" autocomplete="off" value="{{ ($studySheduleStartDate->actual_start_date != '') ?  date('Y-m-d', strtotime($studySheduleStartDate->actual_start_date)) : ''}}" required style="width:80%;">     
                 @else
             
                 <!-- {{ $studySheduleStartDate->actual_start_date != '' ? date('d M Y', strtotime($studySheduleStartDate->actual_start_date)) : '' }} -->
-                    <input type="date" class="form-control actualStartDate scheduleStartDatepicker" max="{{date('Y-m-d')}}" name="actual_start_date" id="actual_start_date"autocomplete="off" value="{{ (!is_null($studySheduleStartDate) && $studySheduleStartDate->actual_start_date != '') ?  date('Y-m-d', strtotime($studySheduleStartDate->actual_start_date)) : ''}}" @if($studySheduleStartDate->actual_start_date != '') ? disabled : '' @endif required style="width:80%;">
+                    <input type="date" class="form-control actualStartDate scheduleDatepicker"  max="{{date('Y-m-d')}}" name="actual_start_date" id="actual_start_date" autocomplete="off" value="{{ (!is_null($studySheduleStartDate) && $studySheduleStartDate->actual_start_date != '') ?  date('Y-m-d', strtotime($studySheduleStartDate->actual_start_date)) : ''}}" @if($studySheduleStartDate->actual_start_date != '') ? disabled : '' @endif required style="width:80%;">
                 @endif
             </div>
         </div>
@@ -113,13 +114,12 @@
         <div class=" form-group mb-3 row" style="{{ $isRemarkFilled == true ? '' : 'display: none' }}" id="startActivityRemark">
             <label class="col-md-3 col-form-label" >Start Activity Remark<span class="mandatory">*</span></label>
             <div class="col-md-9">
-                @if(Auth::guard('admin')->user()->role_id == 2 || Auth::guard('admin')->user()->role_id == 1)                  
+                @if(Auth::guard('admin')->user()->role_id == 2 || Auth::guard('admin')->user()->role_id == 1)
+                                    
                     <input type="text" class="form-control startDelayRemark" name="start_delay_remark" id="start_delay_remark" value="{{ (!is_null($studySheduleStartDate) && $studySheduleStartDate->start_delay_remark != '') ?  ($studySheduleStartDate->start_delay_remark) : ''}}" autocomplete="off" title="{{ $studySheduleStartDate->start_delay_remark }}" style="width:80%;">
                     <!-- {{ $studySheduleStartDate->start_delay_remark != '' ? $studySheduleStartDate->start_delay_remark : '---' }} -->
-                    <!-- <span id="startDelayRemark"></span> -->   
                 @else    
                     <input type="text" class="form-control startDelayRemark" name="start_delay_remark" id="start_delay_remark" value="{{ (!is_null($studySheduleStartDate) && $studySheduleStartDate->start_delay_remark != '') ?  ($studySheduleStartDate->start_delay_remark) : ''}}" @if($studySheduleStartDate->actual_start_date != '') ? disabled : '' @endif required autocomplete="off" title="{{ $studySheduleStartDate->start_delay_remark }}" style="width:80%;">
-                    <!-- <span id="startDelayRemark"></span> -->
                     <!-- {{ $studySheduleStartDate->start_delay_remark != '' ? $studySheduleStartDate->start_delay_remark : '---' }} -->       
                 @endif 
             </div>
@@ -339,13 +339,13 @@
     </div>
 </form>
 <script type="text/javascript">
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-   
     $(document).ready(function(){
         $.each($('.metaDataDatepicker'), function() {
             $(this).datepicker({
@@ -384,6 +384,7 @@
     });    
 
     $(document).ready(function(){
+
         $(document).on('change', '#actual_start_date', function () {
             var actualStartDate = $('#actual_start_date').val();
 
@@ -401,9 +402,9 @@
         });
     });
 
-    // metadata error message hide and show and actual start date modal data ajax threw save
     var startCount = 0;
-    $(document).ready(function() {
+    $(document).ready(function(){
+        // Hide error messages initially
         $('.text-error-message').hide();
         $('.textarea-error-message').hide();
         $('.date-error-message').hide();
@@ -422,7 +423,7 @@
 
         // Attach change event to the radio buttons
         $('input[type^="checkbox"]').on('change', function() {
-           // Find the specific group name of the changed input field
+            // Find the specific group name of the changed input field
             const groupName = $(this).data('group');
 
             // Check if none of the checkboxes in the group are checked
@@ -475,7 +476,7 @@
         });
 
         // Attach input event to the datetime
-       $('.dateTime').on('change', function() {
+        $('.dateTime').on('change', function() {
             // Find the specific index of the changed input field
             const index = $('.dateTime').index(this);
             
@@ -502,8 +503,8 @@
 
         $(document).on('click', '.saveActualStartDate', function(){
             startCount++;
-            // Hide error messages initially
             var isFormValid = true;
+
             // Check if any radio button is checked and it's a mandatory field
             $('.radio-option').each(function () {
                 const groupName = $(this).data('group');
@@ -511,7 +512,6 @@
 
                 if (($(`.inlineRadioOptions_${groupName}:checked`).length === 0) && (isMandatory)) {
                     $(`.radio-error-message[data-group="${groupName}"]`).show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     $(`.radio-error-message[data-group="${groupName}"]`).hide();
@@ -525,7 +525,6 @@
                
                 if (($(`.inlineCheckboxOptions_${groupName}:checked`).length === 0) && (isMandatory)) {
                     $(`.checkbox-error-message[data-group="${groupName}"]`).show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     $(`.checkbox-error-message[data-group="${groupName}"]`).hide();
@@ -539,7 +538,6 @@
                 if (($(this).val() === "") && (isMandatory)) {
                     // Show the text box error message for each specific input field
                     $(this).next('span.text-error-message').show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     // Hide the text box error message for each specific input field
@@ -554,7 +552,6 @@
                 if (($(this).val() === "") && (isMandatory)) {
                     // Show the textarea error message for each specific input field
                     $(this).next('span.textarea-error-message').show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     // Hide the textarea error message for each specific input field
@@ -569,7 +566,6 @@
                 if (($(this).val() === "") && (isMandatory)) {
                     // Show the date box error message for each specific input field
                     $(this).next('span.date-error-message').show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     // Hide the date box error message for each specific input field
@@ -584,7 +580,6 @@
                 if (($(this).val() === "") && (isMandatory)) {        
                     // Show the datetime box error message for each specific input field
                     $(this).next('span.datetime-error-message').show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     // Hide the datetime box error message for each specific input field
@@ -599,7 +594,6 @@
                 if (($(this).val() === "") && (isMandatory)) {
                     // Show the select box error message for each specific input field
                     $(this).next('span.select-error-message').show();
-                    // event.preventDefault();
                     isFormValid = false;
                 } else {
                     // Hide the daselecttetime box error message for each specific input field
@@ -615,8 +609,8 @@
             if(!isFormValid) {
                 startCount = 0;
             }
-            
-            if((isFormValid == true) && (startCount == 1)){
+
+             if((isFormValid == true) && (startCount == 1)){
                 var formData = $('#addActualStartDate').serialize();
                 var scheduledId = $('#id').val();
                 var roleId = $('#role_id').val();
@@ -657,9 +651,22 @@
                     },
                 });
             }
+        });   
+    })
+
+    // validation
+    $(document).ready(function() {
+       
+        // Attach a submit event to the form
+        $('form').submit(function(event) {
+
+            
         });
+
+        
     });
 
+    // validation For file
     $(document).ready(function() {
         $('.file-error-message').hide();
         $('form').on('submit', function(e) {
@@ -698,5 +705,7 @@
                 fileError.hide(); // Clear custom validity
             }
         });
-    });  
+    });
+
+    
 </script>
